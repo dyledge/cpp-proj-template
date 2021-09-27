@@ -1,0 +1,16 @@
+.git
+.idea
+.vscode
+build
+cmake-build-*
+venv
+extern/vcpkg/vcpkg
+extern/vcpkg/buildtrees
+extern/vcpkg/downloads
+extern/vcpkg/installed
+
+.dockerignore
+azure-pipelines.yml
+*.profraw
+Dockerfile*
+docker-compose*

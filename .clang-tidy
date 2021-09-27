@@ -1,0 +1,16 @@
+Checks: '-*,
+cppcoreguidelines-*,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-init-variables,-cppcoreguidelines-pro-type-union-access,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-non-private-member-variables-in-classes,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-pro-bounds-constant-array-index,
+performance-*,
+clang-diagnostic-*,
+clang-analyzer-*,
+cert-*,
+bugprone-*,
+modernize-*,-modernize-use-trailing-return-type,-modernize-avoid-c-arrays,-modernize-use-default-member-init,
+misc-*,-misc-non-private-member-variables-in-classes,-misc-string-compare,-misc-unused-using-decls,
+google-*,-google-readability-todo,-google-runtime-references,
+'
+
+WarningsAsErrors: ''
+HeaderFilterRegex: '.*'
+AnalyzeTemporaryDtors: false
+FormatStyle: none

@@ -1,0 +1,15 @@
+#pragma once
+
+// clang-format off
+constexpr static const char PROGRAM_NAME[] = "@PROJECT_NAME@";
+
+constexpr static const int PROGRAM_VERSION_MAJOR = @PROJECT_VERSION_MAJOR@;
+constexpr static const int PROGRAM_VERSION_MINOR = @PROJECT_VERSION_MINOR@;
+constexpr static const int PROGRAM_VERSION_PATCH = @PROJECT_VERSION_PATCH@;
+//constexpr static const int PROGRAM_VERSION_TWEAK = @PROJECT_VERSION_TWEAK@;
+constexpr static const char PROGRAM_VERSION[] = "@PROJECT_VERSION@";
+constexpr static const char PROGRAM_BUILD_TYPE[] = "@CMAKE_BUILD_TYPE@";
+
+constexpr static const char COPYRIGHT_LINE[] = "@PROJECT_COPYRIGHT_LINE@";
+constexpr static const char PROGRAM_SEMVER_VERSION[] = "@PROJECT_SEMVER_VERSION@";
+// clang-format on
