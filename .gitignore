@@ -169,16 +169,17 @@ fabric.properties
 # The vscode rst preview extension creates this
 docs/_build
 
-# Project uses a python virtual environment, which does not need to be under VCS
+# project root python virtual environment, which does not need to be under VCS
 venv/
 
 # llvm-cov default files
 default.profraw
 
-# other misc application files
-editor.cfg
-imgui.ini
-profile_events.json
+# valgrind files
 massif*
 valgrind*
+
+# Other CMake files we don't keep in source control
 CmakeSettings.json
+
+# other misc application files

@@ -10,9 +10,6 @@ target_include_directories(
 
 find_package(fmt CONFIG REQUIRED)
 
-# set target properties
-target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
-
 target_link_libraries(
   ${PROJECT_NAME}
   PRIVATE project_options project_warnings

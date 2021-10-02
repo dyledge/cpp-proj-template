@@ -50,7 +50,7 @@ if [[ -z "$temp" ]]; then
   git submodule add https://github.com/microsoft/vcpkg.git extern/vcpkg
 fi
 
-# go ahead in init the submodule if .vcpkg-root doesn't exist
+# go ahead and init the submodule if .vcpkg-root doesn't exist
 if [[ ! -e "$VCPKG_ROOT/.vcpkg-root" ]]; then
   git submodule update --init --recursive extern/vcpkg
 fi
