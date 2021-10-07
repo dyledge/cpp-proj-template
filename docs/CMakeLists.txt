@@ -61,10 +61,8 @@ add_custom_command(
   ${SPHINX_BUILD}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS ${SPHINX_SOURCE}/index.rst
-  ${SPHINX_SOURCE}/movementsystem.rst
+  ${SPHINX_SOURCE}/example.rst
   ${SPHINX_SOURCE}/readme.rst
-  ${SPHINX_SOURCE}/transformsystem.rst
-  ${SPHINX_SOURCE}/hotreload.rst
   ${SPHINX_SOURCE}/../README.rst
   ${DOXYGEN_INDEX_FILE}
   ${DYLUTF_RST_FILES}
