@@ -7,10 +7,12 @@ find_package(Doxygen REQUIRED)
 # pulling all headers from the src folder... this is not a general solution, but works for this project a much more
 # robust approach is to ask cmake for the target's include directories - unfortunately, this will not result in actual
 # paths b/c generator expressions...
-file(GLOB_RECURSE DYLUTF_PUBLIC_HEADERS ${CMAKE_SOURCE_DIR}/src/include/*.hpp)
+file(GLOB_RECURSE DYLPROJECT_PUBLIC_HEADERS ${CMAKE_SOURCE_DIR}/src/include/*.hpp)
 
 # doxygen input directory
 set(DOXYGEN_INPUT_DIR ${CMAKE_SOURCE_DIR}/src)
+# To use the project level readme as the mainpage (if the file doesn't exist, will get a warning)
+set(DOXYGEN_README_MAIN_PAGE ${CMAKE_SOURCE_DIR}/README.md)
 # doxygen output directory (must be in the binary output folder)
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/doxygen)
 # the html index file in the binary output folder (this is part of what doxygen generates)
@@ -29,7 +31,7 @@ file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
 # add a custom command with dependencies on this project's public header files
 add_custom_command(
   OUTPUT ${DOXYGEN_INDEX_FILE}
-  DEPENDS ${DYLUTF_PUBLIC_HEADERS}
+  DEPENDS ${DYLPROJECT_PUBLIC_HEADERS}
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
   MAIN_DEPENDENCY ${DOXYFILE_OUT}
   ${DOXYFILE_IN}
@@ -53,7 +55,7 @@ set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/sphinx)
 # the html index file in the binary output folder (this is part of what sphinx-build generates)
 set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
 
-file(GLOB_RECURSE DYLUTF_RST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
+file(GLOB_RECURSE DYLPROJECT_RST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
 
 add_custom_command(
   OUTPUT ${SPHINX_INDEX_FILE}
@@ -65,7 +67,7 @@ add_custom_command(
   ${SPHINX_SOURCE}/readme.rst
   ${SPHINX_SOURCE}/../README.rst
   ${DOXYGEN_INDEX_FILE}
-  ${DYLUTF_RST_FILES}
+  ${DYLPROJECT_RST_FILES}
   MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
   COMMENT "Generating documentation with Sphinx"
 )

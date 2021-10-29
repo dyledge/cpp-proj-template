@@ -5,16 +5,18 @@
 
 # passing in the llvm version number on the command line invokes that specific version of llvm
 # if it is not installed, prepare for messages from the shell about being unable to find it
-llvmver=$1
+llvmver=${1:-12}
+# pass in the directory name, relative to the project root directory, where the cmake output is located
+build_directory=${2:-build}
 
 # specify the directory the unit test executable is located in, as well as the unit test executable name
-test_exe_arg=build/test/unit_tests
+test_exe_arg=$build_directory/test/unit_tests
 
 directory=`dirname ${test_exe_arg}`
 unit_test_exe=`basename ${test_exe_arg}`
 python=/usr/bin/python3
-llvm_profdata="llvm-profdata$llvmver"
-llvm_cov="llvm-cov$llvmver"
+llvm_profdata="llvm-profdata-$llvmver"
+llvm_cov="llvm-cov-$llvmver"
 binary="$directory/$unit_test_exe"
 profraw="$directory/$unit_test_exe.profraw"
 profdata="$directory/$unit_test_exe.profdata"

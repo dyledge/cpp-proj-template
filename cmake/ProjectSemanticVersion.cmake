@@ -26,13 +26,13 @@ if (ENABLE_SEMVER)
 
     # determine if we go down the path using git, or not:
     find_package(Git QUIET)
-    if (GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
-
+    if (GIT_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
       # we are in a git repo, so get the branch name
       execute_process(
         COMMAND ${GIT_EXECUTABLE} branch --show-current
         OUTPUT_VARIABLE GIT_BRANCH_NAME
         RESULT_VARIABLE GIT_SHOW_BRANCH_RESULT
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         OUTPUT_STRIP_TRAILING_WHITESPACE
       )
 
@@ -46,12 +46,13 @@ if (ENABLE_SEMVER)
         )
         set(GIT_BRANCH_PREFIX ${CMAKE_MATCH_1})
 
-        if (GIT_BRANCH_PREFIX STREQUAL "master")
+        if (GIT_BRANCH_NAME STREQUAL "master")
           # get the commit id and set PROJECT_SEMVER_EXT to dev+$commit_id
           execute_process(
             COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
             OUTPUT_VARIABLE GIT_COMMIT_ID
             RESULT_VARIABLE GIT_COMMIT_ID_RESULT
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             OUTPUT_STRIP_TRAILING_WHITESPACE
           )
           if (GIT_COMMIT_ID_RESULT STREQUAL "0")
@@ -63,6 +64,7 @@ if (ENABLE_SEMVER)
             COMMAND ${GIT_EXECUTABLE} describe --tags --abbrev=4 HEAD
             OUTPUT_VARIABLE PROJECT_SEMVER_TAG
             RESULT_VARIABLE GIT_DESCRIBE_RESULT
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             OUTPUT_STRIP_TRAILING_WHITESPACE
           )
           if (GIT_DESCRIBE_RESULT EQUAL "0")
@@ -71,6 +73,7 @@ if (ENABLE_SEMVER)
               COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
               OUTPUT_VARIABLE GIT_COMMIT_ID
               RESULT_VARIABLE GIT_COMMIT_ID_RESULT
+              WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
               OUTPUT_STRIP_TRAILING_WHITESPACE
             )
             if (GIT_COMMIT_ID_RESULT STREQUAL "0")
@@ -85,6 +88,7 @@ if (ENABLE_SEMVER)
             COMMAND ${GIT_EXECUTABLE} rev-parse HEAD
             OUTPUT_VARIABLE GIT_COMMIT_ID
             RESULT_VARIABLE GIT_COMMIT_ID_RESULT
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
             OUTPUT_STRIP_TRAILING_WHITESPACE
           )
           if (GIT_COMMIT_ID_RESULT STREQUAL "0")
