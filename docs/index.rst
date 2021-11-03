@@ -1,8 +1,6 @@
 The documentation for ${PROJECT_NAME}
 =====================================
 
-${PROJECT_DESCRIPTION}
-
 .. toctree::
     :caption: Usage
     :maxdepth: 2

@@ -1,7 +1,6 @@
 Description
 ===========
 
-${PROJECT_DESCRIPTION}
 
 Getting Started
 
