@@ -33,7 +33,7 @@ if [[ -e "$profraw" ]]; then
   # index the profraw file into profdata
   $llvm_profdata merge -sparse "$profraw" -o "$profdata"
 
-  if [[ -e "$directory/$unit_test_exe.profdata" ]]; then
+  if [[ -e "$profdata" ]]; then
     # show the report on the command line
     $llvm_cov report "$binary" -instr-profile="$profdata" -ignore-filename-regex=.*test/.* -ignore-filename-regex=.*extern/.* -use-color
 
@@ -47,5 +47,9 @@ if [[ -e "$profraw" ]]; then
       # convert lcov format into cobertura xml
       $python scripts/lcov_cobertura.py "$lcovdata" -o "$coberturaxml"
     fi
+  elif
+    echo "no indexed profile data found: $profdata"
   fi
+elif
+  echo "no raw profile data found: $profraw"
 fi
