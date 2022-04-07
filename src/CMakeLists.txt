@@ -56,25 +56,13 @@ install(
 )
 
 include(CMakePackageConfigHelpers)
-## TODO:
-## File contents of cmake/${PROJECT_NAME}Config.cmake.in
-##
-##@PACKAGE_INIT@
-##
-### find dependencies
-### <none>
-##
-##if(NOT TARGET ${PROJECT_NAMESPACE}::${PROJECT_NAME})
-##    include(${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Targets.cmake)
-##endif()
-##
 configure_package_config_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/${PROJECT_NAME}Config.cmake.in ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}Config.cmake
   INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
 )
 write_basic_package_version_file(
   ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}ConfigVersion.cmake
-  VERSION ${PROJECT_VERSION} # todo: needs a variable
+  VERSION ${PROJECT_VERSION}
   COMPATIBILITY AnyNewerVersion
 )
 install(FILES ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}Config.cmake ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}ConfigVersion.cmake
