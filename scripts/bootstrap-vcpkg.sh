@@ -9,7 +9,7 @@
 ###  - msys
 ###  - darwin*
 
-version=1.0.1-for-${PROJECT_NAME}
+version=1.0.1-for-${CPP_PROJ_PROJECT_NAME}
 rmAfterInstall="true"
 tripletOverride=
 
@@ -111,17 +111,9 @@ done
 # echo "cp -a extern/patch/vcpkg/ports/avro-c/. ${VCPKG_ROOT}/ports/avro-c"
 # cp -a extern/patch/vcpkg/ports/avro-c/. ${VCPKG_ROOT}/ports/avro-c
 
-# deal with the environment variables that indicate to copy over custom triplet files
-# to the vcpkg directory
-if [[ "${VCPKG_COPY_MUSL_TRIPLET}" == "1" ]]; then
-  cp cmake/x64-linux-musl.cmake ${VCPKG_ROOT}/triplets/x64-linux-musl.cmake
-elif [[ "${VCPKG_COPY_LINUX_ASAN_TRIPLET}" == "1" ]]; then
-  cp cmake/x64-linux-asan.cmake ${VCPKG_ROOT}/triplets/x64-linux-asan.cmake
-fi
-
 # make sure vcpkg is built
 if [[ ! -e "$vcpkg_exe" ]]; then
-  ${VCPKG_ROOT}/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+  ${VCPKG_ROOT}/bootstrap-vcpkg.sh -disableMetrics
 fi
 
 # install all vcpkg dependencies
@@ -131,7 +123,7 @@ if [[ -e "$vcpkg_exe" ]]; then
     vcpkg_install_line="$vcpkg_install_line $i"
   done
   echo "$vcpkg_exe install$vcpkg_install_line"
-  $vcpkg_exe install$vcpkg_install_line
+  $vcpkg_exe --overlay-triplets=scripts/triplets install$vcpkg_install_line
 
   if [[ -e "azure-pipelines.yml" ]]; then
     # update the azure-pipelines.yml file with the commit id of the vcpkg submodule

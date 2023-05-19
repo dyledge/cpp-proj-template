@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = '${PROJECT_NAME}'
-copyright = '${PROJECT_COPYRIGHT}'
-author = '${PROJECT_AUTHOR}'
+project = '${CPP_PROJ_PROJECT_NAME}'
+copyright = '${CPP_PROJ_PROJECT_COPYRIGHT}'
+author = '${CPP_PROJ_PROJECT_AUTHOR}'
 
 
 # -- General configuration ---------------------------------------------------
@@ -57,4 +57,4 @@ primary_domain = 'cpp'
 highlight_language = 'cpp'
 
 # Breathe Configuration
-breathe_default_project = "${PROJECT_NAME}"
+breathe_default_project = "${CPP_PROJ_PROJECT_NAME}"

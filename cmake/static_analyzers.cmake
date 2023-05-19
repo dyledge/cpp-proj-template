@@ -1,3 +1,13 @@
+# If the requested static analyzer is found installed in the host, configure the relevant CMake
+# options to enable and use the static analyzer for all targets in the current directory and all
+# subdirectories.
+
+# Options:
+#
+# ENABLE_CPPCHECK default OFF
+# ENABLE_CLANG_TIDY default OFF
+# ENABLE_INCLUDE_WHAT_YOU_USE default OFF
+
 option(ENABLE_CPPCHECK "Enable static analysis with cppcheck" OFF)
 option(ENABLE_CLANG_TIDY "Enable static analysis with clang-tidy" OFF)
 option(ENABLE_INCLUDE_WHAT_YOU_USE "Enable static analysis with include-what-you-use" OFF)

@@ -3,9 +3,9 @@
 #
 
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = ${PROJECT_NAME}
-PROJECT_NUMBER         = ${PROJECT_VERSION}
-PROJECT_BRIEF          = "${PROJECT_BRIEF}"
+PROJECT_NAME           = ${CPP_PROJ_PROJECT_NAME}
+PROJECT_NUMBER         = ${CPP_PROJ_PROJECT_VERSION}
+PROJECT_BRIEF          = "${CPP_PROJ_PROJECT_BRIEF}"
 PROJECT_LOGO           = 
 OUTPUT_DIRECTORY       = @DOXYGEN_OUTPUT_DIR@
 CREATE_SUBDIRS         = NO
@@ -101,7 +101,7 @@ FILE_PATTERNS          = *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i+
 RECURSIVE              = YES
 EXCLUDE                = 
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = */scripts/* */build/* */docs/* */test/* */extern/* */.git/* */.svn/* */.hg/* */CMakeFiles/* */_CPack_Packages/* DartConfiguration.tcl CMakeLists.txt CMakeCache.txt
+EXCLUDE_PATTERNS       = CMakeLists.txt *.in
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *

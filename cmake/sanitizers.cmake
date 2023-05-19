@@ -1,5 +1,8 @@
-# Enables coverage instrumentation and sanitizers if supported by the toolchain.
-# asan, leak, memory, ub, thread, memory
+# Enables coverage instrumentation and sanitizers if supported by the toolchain, for an interface
+# target.
+
+# Checks for valid combinations of asan, leak, memory, ub, thread, memory sanitizers. Currently only
+# works if the detected compiler is either a Clang or GCC compiler.
 
 # Options:
 #
@@ -12,11 +15,11 @@
 
 function(enable_sanitizers project_name)
 
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+  if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
 
     if (ENABLE_COVERAGE)
-      if (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+      if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         message("using llvm-cov")
         target_compile_options(${project_name} INTERFACE -fprofile-instr-generate -fcoverage-mapping)
         target_link_options(${project_name} INTERFACE -fprofile-instr-generate)
@@ -36,8 +39,8 @@ function(enable_sanitizers project_name)
 
     option(ENABLE_SANITIZER_LEAK "Enable leak sanitizer" FALSE)
     if (ENABLE_SANITIZER_LEAK)
-      if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-        message(WARNING "Leak sanitizer for apple clang is not supported")
+      if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message(WARNING "Leak sanitizer is supported only for LLVM Clang")
       else ()
         list(APPEND SANITIZERS "leak")
       endif ()
@@ -58,7 +61,7 @@ function(enable_sanitizers project_name)
     endif ()
 
     option(ENABLE_SANITIZER_MEMORY "Enable memory sanitizer" FALSE)
-    if (ENABLE_SANITIZER_MEMORY AND CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    if (ENABLE_SANITIZER_MEMORY AND CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       if ("address" IN_LIST SANITIZERS
         OR "thread" IN_LIST SANITIZERS
         OR "leak" IN_LIST SANITIZERS
@@ -69,21 +72,12 @@ function(enable_sanitizers project_name)
       endif ()
     endif ()
 
-    list(
-      JOIN
-      SANITIZERS
-      ","
-      LIST_OF_SANITIZERS
-    )
+    list(JOIN SANITIZERS "," LIST_OF_SANITIZERS)
 
   endif ()
 
   if (LIST_OF_SANITIZERS)
-    if (NOT
-      "${LIST_OF_SANITIZERS}"
-      STREQUAL
-      ""
-      )
+    if (NOT "${LIST_OF_SANITIZERS}" STREQUAL "")
       message("using sanitizers: ${LIST_OF_SANITIZERS}")
       target_compile_options(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})
       target_link_libraries(${project_name} INTERFACE -fsanitize=${LIST_OF_SANITIZERS})

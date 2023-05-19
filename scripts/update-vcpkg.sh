@@ -4,7 +4,7 @@
 ### This script will force an update of vcpkg everytime it is run and update the azure pipeline to ensure the app is
 ### built with the correct version of vcpkg
 
-version=1.0.1-for-${PROJECT_NAME}
+version=1.0.1-for-${CPP_PROJ_PROJECT_NAME}
 tripletOverride=
 
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
@@ -45,9 +45,9 @@ else
 fi
 
 # run vcpkg update --no-dry-run
-./extern/vcpkg/vcpkg upgrade --no-dry-run
+./extern/vcpkg/vcpkg upgrade --overlay-triplets=scripts/triplets --no-dry-run
 
-./extern/vcpkg/vcpkg remove --outdated
+./extern/vcpkg/vcpkg remove --overlay-triplets=scripts/triplets --outdated
 
 if [[ -f "./azure-pipelines.yml" ]]; then
   # update the azure-pipelines.yml file, which includes the commit id of the vcpkg submodule

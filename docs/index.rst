@@ -1,4 +1,4 @@
-The documentation for ${PROJECT_NAME}
+The documentation for ${CPP_PROJ_PROJECT_NAME}
 =====================================
 
 .. toctree::

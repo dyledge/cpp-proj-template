@@ -3,7 +3,7 @@
 ### Use this script to remove all dependencies indicated in vcpkg-dependencies
 ### from the vcpkg submodule
 
-version=1.0.1-for-${PROJECT_NAME}
+version=1.0.1-for-${CPP_PROJ_PROJECT_NAME}
 tripletOverride=
 
 while [[ "$1" =~ ^- && ! "$1" == "--" ]]; do case $1 in
@@ -89,7 +89,7 @@ if [[ -e "$vcpkg_exe" ]]; then
     vcpkg_install_line="$vcpkg_install_line $i"
   done
   echo "$vcpkg_exe remove$vcpkg_install_line"
-  $vcpkg_exe remove$vcpkg_install_line
+  $vcpkg_exe --overlay-triplets=scripts/triplets remove$vcpkg_install_line
 else
   echo "nothing to do: $vcpkg_exe does not exist"
 fi

@@ -1,77 +1,40 @@
-#ifdef GENERATE_LIBRARY
-add_library(
-  ${PROJECT_NAME}
-  main.cpp
-)
-
-add_library(${PROJECT_NAMESPACE}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+#ifdef HEADER_ONLY_LIBRARY
+# this file is not needed for header only libraries
 #else
-add_executable(
-  ${PROJECT_NAME}
-  main.cpp
-)
-#endif
-
-target_include_directories(
-  ${PROJECT_NAME} PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
-)
+option(INTERNAL_BUILD "Use internal build" ON)
 
 find_package(fmt CONFIG REQUIRED)
 
-#ifdef GENERATE_LIBRARY
-target_compile_features(${PROJECT_NAME} PUBLIC ${CPP_LANGUAGE_VERSION})
+add_executable(
+  ${PROJECT_NAME}
+
+  main.cpp
+)
+
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+  
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+)
+
+target_include_directories(
+  ${PROJECT_NAME}
+  SYSTEM PRIVATE
+
+  # list any directories for external libraries
+)
+
 target_link_libraries(
-  ${PROJECT_NAME} PRIVATE
+  ${PROJECT_NAME}
+  PRIVATE project_options
 
   fmt::fmt
 )
-#else
-target_link_libraries(
-  ${PROJECT_NAME} PRIVATE
-  project_options project_warnings
 
-  fmt::fmt
-)
-#endif
-#ifdef GENERATE_LIBRARY
-# -- install
-include(GNUInstallDirs)
-install(
-  TARGETS ${PROJECT_NAME}
-  EXPORT ${PROJECT_NAME}Targets
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  INCLUDES DESTINATION ${LIBLEGACY_INCLUDE_DIRS}
-)
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/include DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(
-  EXPORT ${PROJECT_NAME}Targets
-  FILE ${PROJECT_NAME}Targets.cmake
-  NAMESPACE ${PROJECT_NAMESPACE}::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
+if (INTERNAL_BUILD)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE DYL_INTERNAL_BUILD DYL_CHECKED_ALLOCATORS)
+endif()
 
-include(CMakePackageConfigHelpers)
-configure_package_config_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/../cmake/${PROJECT_NAME}Config.cmake.in ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}Config.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-write_basic_package_version_file(
-  ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}ConfigVersion.cmake
-  VERSION ${PROJECT_VERSION}
-  COMPATIBILITY AnyNewerVersion
-)
-install(FILES ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}Config.cmake ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}ConfigVersion.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME})
-
-# -- export
-export(
-  EXPORT ${PROJECT_NAME}Targets
-  FILE ${CMAKE_BINARY_DIR}/cmake/${PROJECT_NAME}Targets.cmake
-  NAMESPACE ${PROJECT_NAMESPACE}::
-)
 #endif

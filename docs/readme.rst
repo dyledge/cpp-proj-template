@@ -1,1 +1,3 @@
-.. include:: ../README.rst
+${CPP_PROJ_PROJECT_NAME} README
+===============================
+

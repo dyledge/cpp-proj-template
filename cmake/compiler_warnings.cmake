@@ -1,16 +1,29 @@
+# Set pretty stringent warnings compiler warnings for a target, and also control Warnings as Errors
+
+# Since this works on specific compiler vendors, a warning is generated if a compiler is being used
+# that doesn't have any warnings setup. If this CMake warning appears during configuration, it means
+# no additional warnings are set, and neither is Warnings as Errors honored.
+
+# These kinds of warnings are really only good for NEW projects. Trying to get an existing project
+# that has never had these enabled to compile cleanly will most likely result in lots of hairloss.
+
+# Options
+#
+# WARNINGS_AS_ERRORS default FALSE
+
+# This is based on Json Turner's warnings list (https://github.com/lefticus)
+
 function(set_project_warnings project_name)
-  option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" TRUE)
+    option(WARNINGS_AS_ERRORS "Treat compiler warnings as errors" FALSE)
 
   set(MSVC_WARNINGS
     /W4 # Baseline reasonable warnings
     /w14242 # 'identifier': conversion from 'type1' to 'type1', possible loss of data
     /w14254 # 'operator': conversion from 'type1:field_bits' to 'type2:field_bits', possible loss of data
     /w14263 # 'function': member function does not override any base class virtual member function
-    /w14265 # 'classname': class has virtual functions, but destructor is not virtual instances of this class may not
-    # be destructed correctly
+    /w14265 # 'classname': class has virtual functions, but destructor is not virtual instances of this class may not be destructed correctly
     /w14287 # 'operator': unsigned/negative constant mismatch
-    /we4289 # nonstandard extension used: 'variable': loop control variable declared in the for-loop is used outside
-    # the for-loop scope
+    /we4289 # nonstandard extension used: 'variable': loop control variable declared in the for-loop is used outside the for-loop scope
     /w14296 # 'operator': expression is always 'boolean_value'
     /w14311 # 'variable': pointer truncation from 'type1' to 'type2'
     /w14545 # expression before comma evaluates to a function which is missing an argument list
@@ -26,16 +39,14 @@ function(set_project_warnings project_name)
     /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
     /permissive- # standards conformance mode for MSVC compiler.
     /wd4201 # disable the nonstandard extension used: nameless struct/union, for now (note: glm)
-    /wd4103 # disable the alignment changed after including header (see
-    # https://developercommunity.visualstudio.com/t/warning-c4103-in-visual-studio-166-update/1057589)
+    /wd4103 # disable the alignment changed after including header (see https://developercommunity.visualstudio.com/t/warning-c4103-in-visual-studio-166-update/1057589)
     )
 
   set(CLANG_WARNINGS
     -Wall
     -Wextra # reasonable and standard
     -Wshadow # warn the user if a variable declaration shadows one from a parent context
-    -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps
-    # catch hard to track down memory errors
+    -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps catch hard to track down memory errors
     -Wold-style-cast # warn for c-style casts
     -Wcast-align # warn for potential performance problem casts
     -Wunused # warn on anything being unused
@@ -59,12 +70,11 @@ function(set_project_warnings project_name)
     -Wduplicated-cond # warn if if / else chain has duplicated conditions
     -Wduplicated-branches # warn if if / else branches have duplicated code
     -Wlogical-op # warn about logical operations being used where bitwise were probably wanted
-    # -Wuseless-cast # warn if you perform a cast to the same type
     )
 
   if (MSVC)
     set(PROJECT_WARNINGS ${MSVC_WARNINGS})
-  elseif (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+  elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(PROJECT_WARNINGS ${CLANG_WARNINGS})
   elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(PROJECT_WARNINGS ${GCC_WARNINGS})

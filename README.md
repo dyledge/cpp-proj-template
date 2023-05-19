@@ -1,4 +1,4 @@
-# ${PROJECT_NAME}
+# ${CPP_PROJ_PROJECT_NAME}
 
 ## Getting started
 
@@ -12,7 +12,7 @@
 
 ## Dependencies
 
-|Package|Link|License|
-| --- | --- | --- |
-|fmt|https://github.com/fmtlib/fmt|https://github.com/fmtlib/fmt/blob/master/LICENSE.rst|
-|catch2|https://github.com/catchorg/Catch2|Boost Software License 1.0|
+| Package | Link                               | License                                                   |
+|---------|------------------------------------|-----------------------------------------------------------|
+| fmt     | https://github.com/fmtlib/fmt      | https://github.com/fmtlib/fmt/blob/master/LICENSE.rst     |
+| catch2  | https://github.com/catchorg/Catch2 | https://github.com/catchorg/Catch2/blob/devel/LICENSE.txt |

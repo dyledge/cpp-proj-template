@@ -1,3 +1,6 @@
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_macros.hpp>
 
-TEST_CASE("example_test1", "[category]") {}
+TEST_CASE("an example test", "[example]")
+{
+    CHECK(true);
+}

@@ -1,25 +1,19 @@
-# ------------
-# Doxygen docs
-# ------------
-
 find_package(Doxygen REQUIRED)
 
-# pulling all headers from the src folder... this is not a general solution, but works for this project a much more
-# robust approach is to ask cmake for the target's include directories - unfortunately, this will not result in actual
-# paths b/c generator expressions...
-file(GLOB_RECURSE DYLPROJECT_PUBLIC_HEADERS ${CMAKE_SOURCE_DIR}/src/include/*.hpp)
+# Pulling all headers from the src folder... this is not a general solution and should be tailored
+# for each project specifically.
+file(
+  GLOB_RECURSE DYL_PROJECT_PUBLIC_HEADERS
+  ${CMAKE_SOURCE_DIR}/src/*.hpp
+  ${CMAKE_SOURCE_DIR)/*.md
+  # and any other glob filters
+)
 
-# doxygen input directory
 set(DOXYGEN_INPUT_DIR ${CMAKE_SOURCE_DIR}/src)
-# To use the project level readme as the mainpage (if the file doesn't exist, will get a warning)
-set(DOXYGEN_README_MAIN_PAGE ${CMAKE_SOURCE_DIR}/README.md)
-# doxygen output directory (must be in the binary output folder)
+set(DOXYGEN_README_MAIN_PAGE ${CMAKE_SOURCE_DIR}/README.md) # used as main page
 set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR}/doxygen)
-# the html index file in the binary output folder (this is part of what doxygen generates)
 set(DOXYGEN_INDEX_FILE ${DOXYGEN_OUTPUT_DIR}/html/index.html)
-# the doxyfile template file
 set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
-# the resulting doxyfile after configure_file is called
 set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
 # create the doxyfile
@@ -31,7 +25,7 @@ file(MAKE_DIRECTORY ${DOXYGEN_OUTPUT_DIR})
 # add a custom command with dependencies on this project's public header files
 add_custom_command(
   OUTPUT ${DOXYGEN_INDEX_FILE}
-  DEPENDS ${DYLPROJECT_PUBLIC_HEADERS}
+  DEPENDS ${DYL_PROJECT_PUBLIC_HEADERS}
   COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
   MAIN_DEPENDENCY ${DOXYFILE_OUT}
   ${DOXYFILE_IN}
@@ -42,20 +36,14 @@ add_custom_command(
 # custom doxygen target
 add_custom_target(Doxygen_Editor ALL DEPENDS ${DOXYGEN_INDEX_FILE})
 
-# -----------
-# Sphinx docs
-# -----------
 
 find_package(Sphinx REQUIRED)
 
-# the folder containing all of the rst files
 set(SPHINX_SOURCE ${CMAKE_CURRENT_SOURCE_DIR})
-# sphinx output directory (must be in the binary output folder)
 set(SPHINX_BUILD ${CMAKE_CURRENT_BINARY_DIR}/sphinx)
-# the html index file in the binary output folder (this is part of what sphinx-build generates)
 set(SPHINX_INDEX_FILE ${SPHINX_BUILD}/index.html)
 
-file(GLOB_RECURSE DYLPROJECT_RST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
+file(GLOB_RECURSE DYL_PROJECT_RST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/*.rst)
 
 add_custom_command(
   OUTPUT ${SPHINX_INDEX_FILE}
@@ -63,11 +51,13 @@ add_custom_command(
   ${SPHINX_BUILD}
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   DEPENDS ${SPHINX_SOURCE}/index.rst
-  ${SPHINX_SOURCE}/example.rst
-  ${SPHINX_SOURCE}/readme.rst
-  ${SPHINX_SOURCE}/../README.rst
-  ${DOXYGEN_INDEX_FILE}
-  ${DYLPROJECT_RST_FILES}
+    ${SPHINX_SOURCE}/example.rst
+    ${SPHINX_SOURCE}/readme.rst
+    ${DOXYGEN_INDEX_FILE}
+    ${DYL_PROJECT_RST_FILES}
+    ${DOXYGEN_INDEX_FILE}
+    ${DYL_PROJECT_RST_FILES}
+    # add additional dependencies, if needed
   MAIN_DEPENDENCY ${SPHINX_SOURCE}/conf.py
   COMMENT "Generating documentation with Sphinx"
 )
